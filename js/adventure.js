@@ -3,8 +3,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 var players, player;
 
 function preload() {
-    game.load.tilemap('mapTilemap', 'maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('desertImage', 'maps/tmw_desert_spacing.png');
+    game.load.tilemap('mapTilemap', 'maps/adventure.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('adventureImage', 'maps/adventure.png');
     game.load.spritesheet('playerSpriteSheet', 'assets/dude.png',32,48, 9);
 }
 
@@ -13,7 +13,7 @@ function create() {
 
     //add tilemap to game and match Tiled's tileset name to Phaser tileset image
     map = game.add.tilemap('mapTilemap');
-    map.addTilesetImage('tmw_desert_spacing', 'desertImage');
+    map.addTilesetImage('adventure', 'adventureImage');
 
     //create the layer named groundLayer from Phaser and resize world to fit
     groundLayer = map.createLayer('groundLayer');
