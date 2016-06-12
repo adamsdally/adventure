@@ -1,6 +1,7 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
-var players, player;
+var players, player, line;
+var graphics;
 
 function preload() {
     game.load.tilemap('mapTilemap', 'maps/adventure.json', null, Phaser.Tilemap.TILED_JSON);
@@ -31,15 +32,28 @@ function create() {
         player.animations.add('still', [4], 5, true);
         player.animations.add('left', [0,1,2,3], 5, true);
         player.animations.add('right', [5,6,7,8], 5, true);
+        player.health=100;
+        player.anchor.set(0.5,0.5);
     }, this, true);
 
     //Currently there is only one player in the players group
     //set it as player and follow with camera
     player = players.children[0];
     game.camera.follow(player);
+
+    //graphics
+    game.stage.backgroundColor = '#124184';
+
+    graphics = game.add.graphics(0, 0);
+
+
 }
 
 function update() {
+
+    //line.centerOn(game.input.activePointer.x, game.input.activePointer.y);
+    //line.rotate(0.05);
+
     if (game.input.mousePointer.isDown) {
         //if it's overlapping the mouse, don't move any more
         //otherwise move at speed of 400
@@ -58,4 +72,9 @@ function update() {
         player.animations.play('right');
     else
         player.animations.play('still');
+
+    // draw the health rectangle
+    graphics.clear()
+    graphics.lineStyle(2, 0x0000FF, 1);
+    graphics.drawRect(player.body.x + player.body.width/2 - player.health/2, player.body.y - 10, player.health, 10);
 }
