@@ -2,10 +2,13 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 
 var players, player, line;
 var graphics;
+var cursors;
+var defaultSpeed = 500;
 
 function preload() {
     game.load.tilemap('mapTilemap', 'maps/adventure.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('adventureImage', 'maps/adventure.png');
+    game.load.image('treesImage', 'assets/tree2.png');
     game.load.spritesheet('playerSpriteSheet', 'assets/dude.png',32,48, 9);
 }
 
@@ -15,10 +18,12 @@ function create() {
     //add tilemap to game and match Tiled's tileset name to Phaser tileset image
     map = game.add.tilemap('mapTilemap');
     map.addTilesetImage('adventure', 'adventureImage');
+    map.addTilesetImage ('Tree', 'treesImage');
 
     //create the layer named groundLayer from Phaser and resize world to fit
     groundLayer = map.createLayer('groundLayer');
     groundLayer.resizeWorld();
+    treeLayer = map.createLayer('treeLayer');
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
     players = game.add.group();
@@ -46,6 +51,8 @@ function create() {
 
     graphics = game.add.graphics(0, 0);
 
+    cursors = game.input.keyboard.createCursorKeys();
+
 
 }
 
@@ -64,6 +71,24 @@ function update() {
     } else {
         players.children[0].body.velocity.setTo(0, 0);
     }
+    if (cursors.up.isDown)
+    {
+       player.body.velocity.y = -defaultSpeed;
+    }
+    else if (cursors.down.isDown)
+    {
+       player.body.velocity.y = defaultSpeed;
+
+    }
+
+    if (cursors.left.isDown)
+    {
+        player.body.velocity.x = -defaultSpeed;
+    }
+    else if (cursors.right.isDown)
+    {
+        player.body.velocity.x = defaultSpeed;
+    }
 
     //Change animation accordingly
     if (player.body.velocity.x<0)
@@ -77,4 +102,6 @@ function update() {
     graphics.clear()
     graphics.lineStyle(2, 0x0000FF, 1);
     graphics.drawRect(player.body.x + player.body.width/2 - player.health/2, player.body.y - 10, player.health, 10);
+
+
 }
